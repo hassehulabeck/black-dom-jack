@@ -4,6 +4,24 @@ var ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
 var hand = [];
 let summa = 0;
 
+// När vi laddat in allt.
+document.addEventListener('DOMContentLoaded', function() {
+
+    createDeck();
+    shuffle(deck);
+    // console.log(deck);
+    deal(2);
+    // console.log(hand);
+    renderHand();
+
+    var button = document.getElementsByTagName('button');
+    button[0].addEventListener('click', () => {
+        deal(1);
+        renderHand();
+    })
+
+});
+
 function createDeck() {
     suits.forEach((suit) => {
         ranks.forEach((rank) => {
@@ -19,12 +37,6 @@ function Card(suit, rank) {
 }
 
 
-createDeck();
-shuffle(deck);
-// console.log(deck);
-deal(2);
-// console.log(hand);
-renderHand();
 
 function renderHand() {
     let mainArea = document.getElementsByTagName('main');
