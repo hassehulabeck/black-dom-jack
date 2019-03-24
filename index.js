@@ -4,20 +4,27 @@ var ranks = [2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K", "A"];
 var player = [];
 var dealer = [];
 let summa = 0;
+let playerWins = 0,
+    dealerWins = 0;
+
 
 // När vi laddat in allt.
 document.addEventListener('DOMContentLoaded', function() {
 
-    createDeck();
-    shuffle(deck);
-    // console.log(deck);
-    deal(player, 2);
-    deal(dealer, 1);
+    // Dela.
+    newHands();
 
-    // console.log(hand);
-    renderHand(player, "main");
-    renderHand(dealer, "dealerArea");
+    var newDealBtn = document.getElementById('newDeal');
+    newDealBtn.addEventListener('click', () => {
+        newHands();
+    })
 
+    // Eller via DEL
+    document.addEventListener("keyup", event => {
+        if (event.key === "Delete") {
+            newHands();
+        }
+    });
     var button = document.getElementById('hit');
     button.addEventListener('click', () => {
         deal(player, 1);
@@ -48,6 +55,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
 });
 
+function winControl() {
+    // Vinstkontroll
+    if ((summera(dealer) <= 21) && (summera(player) <= 21)) {
+        if (summera(player) > summera(dealer)) {
+            playerWins++;
+        } else {
+            dealerWins++;
+        }
+    } else {
+        if (summera(dealer) > 21) {
+            playerWins++;
+        }
+        if (summera(player) > 21) {
+            dealerWins++;
+        }
+    }
+
+}
+
+function newHands() {
+    createDeck();
+    shuffle(deck);
+    player = [];
+    dealer = [];
+    // console.log(deck);
+    deal(player, 2);
+    deal(dealer, 1);
+
+    // console.log(hand);
+    renderHand(player, "main");
+    renderHand(dealer, "dealerArea");
+}
+
 function createDeck() {
     suits.forEach((suit) => {
         ranks.forEach((rank) => {
@@ -69,9 +109,9 @@ function stop() {
         renderHand(dealer, "dealerArea");
         if (summera(dealer) >= 17) {
             clearInterval(x);
+            winControl();
         }
     }, 1000);
-
 }
 
 
@@ -100,10 +140,10 @@ function renderHand(hand, area) {
     let summaArea;
     if (area == 'main') {
         summaArea = document.getElementsByTagName('header');
-        summaArea[0].innerHTML = summera(player);
+        summaArea[0].innerHTML = summera(player) + "[" + playerWins + "]";
     } else {
         summaArea = document.getElementsByTagName('footer');
-        summaArea[0].innerHTML = summera(dealer);
+        summaArea[0].innerHTML = summera(dealer) + "[" + dealerWins + "]";
     }
 }
 

@@ -77,6 +77,11 @@ button {
     background-color: brown;
 }
 
+#hit {
+    background-color: yellow;
+    color: #222;
+}
+
 button:hover {
     background-color: chartreuse;
 }
